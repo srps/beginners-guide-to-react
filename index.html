@@ -1,0 +1,61 @@
+<body>
+  <div id="root"></div>
+  <style>
+    .box {
+      border: 1px solid #333;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .box--large {
+      width: 270px;
+      height: 270px;
+    }
+
+    .box--medium {
+      width: 180px;
+      height: 180px;
+    }
+
+    .box--small {
+      width: 90px;
+      height: 90px;
+    }
+  </style>
+  <script src="https://unpkg.com/react@17.0.2/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.14.7/babel.js"></script>
+  <script src="https://unpkg.com/prop-types@15.7.2/prop-types.js"></script>
+  <script type="text/babel">
+    const rootElement = document.getElementById("root");
+
+    const useLocalStorageState = (key, defaultValue = "") => {
+      const [state, setState] = React.useState(
+        () => window.localStorage.getItem(key) || defaultValue
+      );
+      React.useEffect(() => {
+        window.localStorage.setItem(key, state);
+      }, [state]);
+      return [state, setState];
+    };
+
+    const Greeting = () => {
+      useLocalStorageState();
+
+      const handleChange = (event) => setState(event.target.value);
+      return (
+        <>
+          <form>
+            <label htmlFor="name">Name: </label>
+            <input value={name} onChange={handleChange} id="name" />
+          </form>
+          {name ? <strong>Hello {name}</strong> : "Please type your name"}
+        </>
+      );
+    };
+
+    ReactDOM.render(<Greeting />, rootElement);
+  </script>
+</body>
